@@ -368,6 +368,13 @@ static inline CGSize CTFramesetterSuggestFrameSizeForAttributedStringWithConstra
     return self;
 }
 
+- (instancetype)initWithCoder:(NSCoder *)aDecoder {
+    if (self = [super initWithCoder:aDecoder]) {
+        [self commonInit];
+    }
+    return self;
+}
+
 - (void)commonInit
 {
     self.userInteractionEnabled = YES;
@@ -448,6 +455,7 @@ static inline CGSize CTFramesetterSuggestFrameSizeForAttributedStringWithConstra
     if ([_attributedHtmlString isEqualToAttributedString:attributedHtmlString]) {
         return;
     }
+    [self commonInit];
     _attributedHtmlString = attributedHtmlString;
     _htmlAttributedText = nil;
     if (_attributedHtmlString) {
