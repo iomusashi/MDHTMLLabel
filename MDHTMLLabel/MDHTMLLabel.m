@@ -444,6 +444,33 @@ static inline CGSize CTFramesetterSuggestFrameSizeForAttributedStringWithConstra
     [self invalidateIntrinsicContentSize];
 }
 
+- (void)setAttributedHtmlString:(NSAttributedString *)attributedHtmlString {
+    if ([_attributedHtmlString isEqualToAttributedString:attributedHtmlString]) {
+        return;
+    }
+    _attributedHtmlString = attributedHtmlString;
+    _htmlAttributedText = nil;
+    if (_attributedHtmlString) {
+        NSString *htmlString = [_attributedHtmlString string];
+        htmlString = [htmlString stringByReplacingOccurrencesOfString:@"<br>" withString:@"\n"];
+        htmlString = [htmlString stringByReplacingOccurrencesOfString:@"<br/>" withString:@"\n"];
+        htmlString = [htmlString stringByReplacingOccurrencesOfString:@"<br .>" withString:@"\n"];
+        
+        if (self.autoDetectUrls) {
+            htmlString = [self detectURLsInText:htmlString];
+        }
+        self.htmlText = htmlString;
+        [self extractStyleFromText:htmlString];
+    } else {
+        self.styleComponents = nil;
+        self.plainText = nil;
+        self.links = [NSMutableArray array];
+    }
+    [self setNeedsFramesetter];
+    [self setNeedsDisplay];
+    [self invalidateIntrinsicContentSize];
+}
+
 - (NSAttributedString *)htmlAttributedText
 {
     if (!_htmlAttributedText)
