@@ -368,13 +368,6 @@ static inline CGSize CTFramesetterSuggestFrameSizeForAttributedStringWithConstra
     return self;
 }
 
-- (instancetype)initWithCoder:(NSCoder *)aDecoder {
-    if (self = [super initWithCoder:aDecoder]) {
-        [self commonInit];
-    }
-    return self;
-}
-
 - (void)commonInit
 {
     self.userInteractionEnabled = YES;
